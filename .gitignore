@@ -1,1 +1,9 @@
-target/
+**\.project
+**\.settings
+**\.classpath
+**\target
+**\bin
+**\gen
+
+**\.directory
+/target
