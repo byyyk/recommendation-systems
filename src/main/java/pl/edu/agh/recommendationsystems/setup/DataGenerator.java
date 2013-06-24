@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DataGenerator {
 
@@ -16,8 +17,10 @@ public class DataGenerator {
 	@Autowired
 	private VoteDataGenerator voteDataGenerator;
 
-
+	@Transactional
 	public void generateAndPersist() throws IOException {
+		removeAll();
+		
 		MovieGenerationResult movieGenerationResult = movieDataGenerator.readAndPersistMovies();
 		List<MovieRating> movieRatings = movieGenerationResult.getMovieRatings();
 		int maxVoteCount = movieGenerationResult.getMaxVoteCount();
@@ -25,6 +28,12 @@ public class DataGenerator {
 		personDataGenerator.generateAndPersistUsers(maxVoteCount);
 
 		voteDataGenerator.generateAndPersistVotes(movieRatings);
+	}
+
+	private void removeAll() {
+		voteDataGenerator.removeAll();
+		personDataGenerator.removeAll();
+		movieDataGenerator.removeAll();
 	}
 
 	public static void main(String[] args) throws IOException {

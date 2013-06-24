@@ -1,16 +1,18 @@
 package pl.edu.agh.recommendationsystems.setup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import pl.edu.agh.recommendationsystems.persistence.Person;
 import pl.edu.agh.recommendationsystems.persistence.Vote;
@@ -74,10 +76,50 @@ public class VoteDataGenerator {
 	}
 
 	private void fillRandomCriteriaVotes(Vote vote, int rating) {
-		// TODO
-		vote.setActingScore(rating);
-		vote.setDirectionScore(rating);
-		vote.setStoryScore(rating);
-		vote.setVisualsScore(rating);
+		LOGGER.info("Generating criteria scores for rating: " + rating);
+		
+		Random random = new Random();
+		List<Integer> criterias = new ArrayList<Integer>();
+		for (int i = 0; i < 4; i ++) {
+			criterias.add(1 + random.nextInt(10));
+		}
+
+		final double eps = 0.2d;
+		double error = average(criterias) - rating;
+		while (Math.abs(error) > eps) {
+			if (error > 0) {
+				Integer max = Collections.max(criterias);
+				criterias.remove(max);
+				criterias.add(1 + random.nextInt(10));
+			} else if (error < 0) {
+				Integer min = Collections.min(criterias);
+				criterias.remove(min);
+				criterias.add(1 + random.nextInt(10));
+			}
+			error = average(criterias) - rating;
+		}
+		
+		LOGGER.info("Calculated scores: " + Arrays.toString(criterias.toArray()) + ", average: " + average(criterias) + ", diff: " + error);
+
+		vote.setActingScore(criterias.remove(0));
+		vote.setDirectionScore(criterias.remove(0));
+		vote.setStoryScore(criterias.remove(0));
+		vote.setVisualsScore(criterias.remove(0));
+	}
+	
+	private double average(List<Integer> list) {
+		if (list.size() == 0) {
+			return 0;
+		}
+		
+		int sum = 0;
+		for (int i : list) {
+			sum += i;
+		}
+		return ((double) sum) / list.size();
+	}
+
+	public void removeAll() {
+		voteRepository.deleteAllInBatch();
 	}
 }

@@ -26,5 +26,9 @@ public class PersonDataGenerator {
 			personRepository.save(person);
 		}
 	}
+
+	public void removeAll() {
+		personRepository.deleteAllInBatch();
+	}
 	
 }
