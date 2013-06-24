@@ -18,10 +18,12 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<bean id="movieDataGenerator" class="pl.edu.agh.recommendationsystems.setup.MovieDataGenerator" />
 	<bean id="personDataGenerator" class="pl.edu.agh.recommendationsystems.setup.PersonDataGenerator" />
 	<bean id="voteDataGenerator" class="pl.edu.agh.recommendationsystems.setup.VoteDataGenerator" />
-	<bean id="sdfasdf"
-		class="pl.edu.agh.recommendationsystems.algorithms.SimpleRecommendationAlgorithm" />
-	<bean id="recommendationSystem"
-		class="pl.edu.agh.recommendationsystems.core.RecommendationSystem" />
+	<bean id="sdfasdf" class="pl.edu.agh.recommendationsystems.algorithms.SimpleRecommendationAlgorithm" />
+
+    <bean id="sbcAlgorithm" class="pl.edu.agh.recommendationsystems.algorithms.sbc.SBCRecommendationAlgorithm" />
+    <bean id="sbcPersonSimilarityCalculator" class="pl.edu.agh.recommendationsystems.algorithms.sbc.PersonSimilarityCalculator" />
+
+    <bean id="recommendationSystem"	class="pl.edu.agh.recommendationsystems.core.RecommendationSystem" />
 
 	<jpa:repositories base-package="pl.edu.agh.recommendationsystems.persistence" />
 
