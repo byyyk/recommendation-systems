@@ -39,7 +39,7 @@ public class Vote {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "person_id", nullable = false)
 	public Person getPerson() {
 		return person;
@@ -49,7 +49,7 @@ public class Vote {
 		this.person = person;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "movie_id", nullable = false)
 	public Movie getMovie() {
 		return movie;

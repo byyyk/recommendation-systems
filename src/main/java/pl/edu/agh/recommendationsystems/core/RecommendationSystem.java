@@ -35,6 +35,7 @@ public class RecommendationSystem {
 	@Transactional
 	public void doWork() {
 		LOGGER.debug("Recommendation system started");
+        long time = System.currentTimeMillis();
 		List<Movie> movies = movieRepository.findAll();
 		for (Person person : personRepository.findAll()) {
 			List<Movie> notRatedMovies = new ArrayList<Movie>(movies);
@@ -52,6 +53,8 @@ public class RecommendationSystem {
 				// TODO log results
 			}
 		}
+        time = System.currentTimeMillis() - time;
+        LOGGER.info("\n\t--------\n\n\trecommendations calculated in: " + time/1000 + " sec\n\n\t--------");
 	}
 
 	public static void main(String[] args) {

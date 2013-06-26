@@ -19,6 +19,7 @@ public class Person {
 	private long id;
 	
 	private String username;
+    private String password;
 	
 	private Set<Vote> votes;
 	
@@ -41,8 +42,17 @@ public class Person {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+    @Column(name = "person_password", unique = false)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = CascadeType.ALL)
 	public Set<Vote> getVotes() {
 		return votes;
 	}
